@@ -1,0 +1,46 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Kape",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#f7f1ea"
+				},
+				{
+					"slug": "base-2",
+					"name": "Base 2",
+					"color": "#ecdfd2"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#2a1a12"
+				},
+				{
+					"slug": "contrast-2",
+					"name": "Contrast 2",
+					"color": "#6a5345"
+				},
+				{
+					"slug": "accent",
+					"name": "Accent",
+					"color": "#7a3e1d"
+				},
+				{
+					"slug": "on-accent",
+					"name": "Text on Accent",
+					"color": "#fff8f0"
+				},
+				{
+					"slug": "line",
+					"name": "Line",
+					"color": "#dccbbb"
+				}
+			]
+		}
+	}
+}

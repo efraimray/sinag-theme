@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Gabi",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#0f1513"
+				},
+				{
+					"slug": "base-2",
+					"name": "Base 2",
+					"color": "#18211d"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#e8efe9"
+				},
+				{
+					"slug": "contrast-2",
+					"name": "Contrast 2",
+					"color": "#a5b4aa"
+				},
+				{
+					"slug": "accent",
+					"name": "Accent",
+					"color": "#f2b01e"
+				},
+				{
+					"slug": "on-accent",
+					"name": "Text on Accent",
+					"color": "#14130c"
+				},
+				{
+					"slug": "line",
+					"name": "Line",
+					"color": "#2b3832"
+				}
+			]
+		}
+	},
+	"styles": {
+		"elements": {
+			"button": {
+				":hover": {
+					"color": {
+						"background": "var:preset|color|contrast",
+						"text": "var:preset|color|base"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,113 @@
+/*
+Theme Name: Sinag
+Theme URI: https://github.com/EfraimRay/sinag-theme
+Author: Efraim Ray
+Author URI: https://www.efraimray.com/
+Description: A fast, no-JavaScript block theme for Philippine small businesses: cafés, sari-sari stores, clinics, cooperatives and service shops. Five style variations, ready-made patterns (hero, services, price list in pesos, hours and location, FAQ, message CTA) and a Business Details screen that fills your phone, address, hours and Messenger link into every pattern through the Block Bindings API.
+Requires at least: 6.6
+Tested up to: 6.9
+Requires PHP: 7.4
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: sinag-theme
+Tags: block-patterns, full-site-editing, style-variations, one-column, wide-blocks, editor-style, custom-colors, custom-logo, translation-ready, accessibility-ready, blog, e-commerce
+*/
+
+/* Most styling lives in theme.json. These rules cover the few things theme.json cannot express. */
+
+/* Skip link and focus states stay visible on every variation. */
+:where(a, button, summary, input, select, textarea):focus-visible {
+	outline: 2px solid var(--wp--preset--color--contrast);
+	outline-offset: 3px;
+}
+
+/* Header, main and footer sit flush; sections add their own padding. */
+.wp-site-blocks > * { margin-block-start: 0; }
+.has-text-align-center { text-align: center; }
+
+/* Top bar (hours + phone) above the header */
+.sinag-topbar {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--small);
+	letter-spacing: 0.02em;
+}
+.sinag-topbar p { margin: 0; }
+
+/* Header gets a hairline so it separates from a hero of the same colour. */
+.sinag-header { border-bottom: 1px solid var(--wp--preset--color--line); }
+
+/* Hero: a soft sun rising behind the headline (pure CSS, no image request). */
+.sinag-hero { position: relative; overflow: hidden; isolation: isolate; }
+.sinag-hero::before {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	width: min(70vw, 620px);
+	aspect-ratio: 1;
+	right: -12%;
+	bottom: -55%;
+	border-radius: 50%;
+	background: radial-gradient(circle, color-mix(in srgb, var(--wp--preset--color--accent) 55%, transparent) 0%, transparent 68%);
+	pointer-events: none;
+}
+.sinag-eyebrow {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--small);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--contrast-2);
+}
+
+/* Block style: Card (core/group). Registered in functions.php. */
+.is-style-sinag-card {
+	background: var(--wp--preset--color--base);
+	border: 1px solid var(--wp--preset--color--line);
+	border-radius: var(--wp--custom--radius--medium);
+	box-shadow: var(--wp--custom--shadow);
+}
+
+/* Block style: Price list (core/group). Dotted leaders between item and price. */
+.is-style-sinag-price-row {
+	display: flex;
+	align-items: baseline;
+	gap: 0.6rem;
+}
+.is-style-sinag-price-row > :first-child { flex: none; margin: 0; }
+.is-style-sinag-price-row > :last-child {
+	flex: none;
+	margin: 0;
+	font-variant-numeric: tabular-nums;
+	font-weight: 600;
+}
+.sinag-leader {
+	flex: 1;
+	min-width: 1.5rem;
+	border-bottom: 2px dotted var(--wp--preset--color--line);
+	transform: translateY(-0.3em);
+}
+
+/* Block style: Check list (core/list). */
+.is-style-sinag-checks { list-style: none; padding-left: 0; }
+.is-style-sinag-checks li { position: relative; padding-left: 1.75em; }
+.is-style-sinag-checks li::before {
+	content: "";
+	position: absolute;
+	left: 0.2em;
+	top: 0.45em;
+	width: 0.5em;
+	height: 0.85em;
+	border: solid var(--wp--preset--color--contrast);
+	border-width: 0 2.5px 2.5px 0;
+	transform: rotate(45deg);
+}
+
+/* FAQ: a plus sign that turns into a minus. */
+.wp-block-details summary { cursor: pointer; font-weight: 600; list-style: none; position: relative; padding-right: 2rem; }
+.wp-block-details summary::-webkit-details-marker { display: none; }
+.wp-block-details summary::after { content: "+"; position: absolute; right: 0.25rem; top: 0; font-family: var(--wp--preset--font-family--mono); }
+.wp-block-details[open] summary::after { content: "\2212"; }
+
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { transition: none !important; animation: none !important; }
+}

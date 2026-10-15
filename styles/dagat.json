@@ -1,0 +1,46 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Dagat",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#f3f8fb"
+				},
+				{
+					"slug": "base-2",
+					"name": "Base 2",
+					"color": "#dfeef5"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#0b2533"
+				},
+				{
+					"slug": "contrast-2",
+					"name": "Contrast 2",
+					"color": "#46606d"
+				},
+				{
+					"slug": "accent",
+					"name": "Accent",
+					"color": "#0d7fa5"
+				},
+				{
+					"slug": "on-accent",
+					"name": "Text on Accent",
+					"color": "#ffffff"
+				},
+				{
+					"slug": "line",
+					"name": "Line",
+					"color": "#c6dce6"
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,46 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Palay",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "base",
+					"name": "Base",
+					"color": "#f7f8ee"
+				},
+				{
+					"slug": "base-2",
+					"name": "Base 2",
+					"color": "#eaeed8"
+				},
+				{
+					"slug": "contrast",
+					"name": "Contrast",
+					"color": "#1c2810"
+				},
+				{
+					"slug": "contrast-2",
+					"name": "Contrast 2",
+					"color": "#55603f"
+				},
+				{
+					"slug": "accent",
+					"name": "Accent",
+					"color": "#4f6f12"
+				},
+				{
+					"slug": "on-accent",
+					"name": "Text on Accent",
+					"color": "#ffffff"
+				},
+				{
+					"slug": "line",
+					"name": "Line",
+					"color": "#d4dbbb"
+				}
+			]
+		}
+	}
+}

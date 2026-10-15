@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive preview of Sinag, a free script-free WordPress block theme for Philippine small businesses.">
+<title>Showcase · Sinag</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>body{margin:0}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a "theme bench" — live site preview in a browser frame beside a control rail (Site Editor feel), then an About section. */
+:root {
+  --bg: #f3f5f0; --surface: #ffffff; --ink: #14261d; --muted: #56675c; --line: #d7dfd2;
+  --accent: #f2b01e; --accent-ink: #8a5d00; --on-accent: #14261d; --focus: #0d7fa5;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1412; --surface: #151d1a; --ink: #e6eee8; --muted: #9fb0a5; --line: #26332d;
+  --accent: #f2b01e; --accent-ink: #f5c453; --on-accent: #14130c; --focus: #5cc8ea; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e1412; --surface: #151d1a; --ink: #e6eee8; --muted: #9fb0a5; --line: #26332d;
+  --accent: #f2b01e; --accent-ink: #f5c453; --on-accent: #14130c; --focus: #5cc8ea; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; text-wrap: balance; margin: 0; }
+.mono { font-family: var(--font-mono); }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Masthead */
+.mast { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: end; margin-bottom: 22px; }
+.tag { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); display: inline-flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.tag::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); }
+.mast h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.03em; }
+.mast h1 span { color: var(--accent-ink); }
+.mast p { margin: 8px 0 0; color: var(--muted); max-width: 62ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.chip { font-family: var(--font-mono); font-size: .74rem; border: 1px solid var(--line); background: var(--surface); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+
+/* Bench */
+.bench { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 18px; align-items: start; }
+.frame { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); min-width: 0; }
+.chrome { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+.dots { display: flex; gap: 6px; } .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: block; }
+.url { flex: 1; min-width: 0; font-family: var(--font-mono); font-size: .75rem; color: var(--muted); background: var(--bg); border-radius: 999px; padding: 4px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; flex: none; }
+.seg button { border: 0; background: none; padding: 3px 10px; border-radius: 999px; font-size: .75rem; cursor: pointer; font-family: var(--font-mono); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.stage { background: repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--line) 35%, transparent) 10px 11px); display: flex; justify-content: center; }
+.viewport { width: 100%; max-height: 760px; overflow: auto; transition: width .35s ease; background: var(--s-base); }
+.viewport.phone { width: 390px; max-width: 100%; border-inline: 1px solid var(--line); }
+
+/* ===== The sample site, styled ONLY from the active variation's palette (--s-*) ===== */
+.site { --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif; --smono: ui-monospace, Menlo, Consolas, monospace;
+  background: var(--s-base); color: var(--s-contrast); font-family: var(--sans); font-size: 15px; line-height: 1.6; transition: background .3s, color .3s; }
+.site * { transition: background-color .3s, color .3s, border-color .3s; }
+.site h2, .site h3, .site .s-h1 { font-family: var(--serif); font-weight: 700; color: var(--s-contrast); }
+.s-in { max-width: 1000px; margin: 0 auto; padding-inline: 22px; }
+.s-narrow { max-width: 640px; margin: 0 auto; padding-inline: 22px; }
+.s-top { background: var(--s-contrast); color: var(--s-base); font-family: var(--smono); font-size: 12px; }
+.s-top .s-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding-block: 8px; }
+.s-head { border-bottom: 1px solid var(--s-line); }
+.s-head .s-in { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px; }
+.s-brand { font-family: var(--serif); font-weight: 700; font-size: 18px; display: flex; gap: 8px; align-items: center; }
+.s-logo { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 50% 70%, var(--s-accent) 0 45%, transparent 46%), var(--s-base-2); border: 1px solid var(--s-line); }
+.s-nav { display: flex; gap: 16px; font-size: 14px; } .s-nav span { cursor: default; }
+.s-burger { display: none; width: 22px; height: 14px; border-block: 2px solid var(--s-contrast); position: relative; } .s-burger::after { content: ""; position: absolute; left: 0; right: 0; top: 4px; border-top: 2px solid var(--s-contrast); }
+.s-eyebrow { font-family: var(--smono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--s-contrast-2); margin: 0 0 8px; }
+.s-band { padding-block: 52px; position: relative; }
+.s-band.alt { background: var(--s-base-2); }
+.s-hero { overflow: hidden; isolation: isolate; padding-block: 72px; }
+.s-hero::before { content: ""; position: absolute; z-index: -1; width: 460px; aspect-ratio: 1; right: -110px; bottom: -230px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--s-accent) 55%, transparent), transparent 68%); }
+.s-h1 { font-size: clamp(28px, 4.4vw, 46px); line-height: 1.12; letter-spacing: -.02em; margin: 0 0 14px; }
+.s-lead { font-size: 18px; margin: 0 0 20px; }
+.s-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.s-btn { display: inline-block; padding: 9px 20px; border-radius: 999px; font-weight: 600; font-size: 14px; background: var(--s-accent); color: var(--s-on-accent); border: 2px solid var(--s-accent); text-decoration: none; }
+.s-btn.out { background: transparent; color: var(--s-contrast); border-color: var(--s-contrast); }
+.s-btn.ink { background: var(--s-contrast); color: var(--s-base); border-color: var(--s-contrast); }
+.s-btn small { font-family: var(--smono); font-weight: 400; opacity: .75; margin-left: 6px; font-size: 11px; }
+.site h2 { font-size: 27px; margin: 0 0 18px; }
+.site h3 { font-size: 18px; margin: 0 0 8px; }
+.s-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.s-card { background: var(--s-base); border: 1px solid var(--s-line); border-radius: 14px; padding: 18px; box-shadow: 0 6px 18px color-mix(in srgb, var(--s-contrast) 8%, transparent); }
+.s-card p { margin: 0; font-size: 14px; }
+.s-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.s-row { display: flex; align-items: baseline; gap: 8px; margin: 0 0 10px; font-size: 14px; }
+.s-row b { font-variant-numeric: tabular-nums; }
+.s-lead-dots { flex: 1; min-width: 20px; border-bottom: 2px dotted var(--s-line); transform: translateY(-4px); }
+.s-checks { list-style: none; padding: 0; margin: 14px 0 0; font-size: 14px; }
+.s-checks li { position: relative; padding-left: 22px; margin-bottom: 4px; }
+.s-checks li::before { content: ""; position: absolute; left: 3px; top: 5px; width: 6px; height: 11px; border: solid var(--s-contrast); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.s-details { border-bottom: 1px solid var(--s-line); padding-block: 12px; }
+.s-details summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+.s-details summary::-webkit-details-marker { display: none; }
+.s-details summary::after { content: "+"; font-family: var(--smono); } .s-details[open] summary::after { content: "\2212"; }
+.s-details p { margin: 8px 0 0; font-size: 14px; }
+.s-cta { background: var(--s-accent); color: var(--s-on-accent); text-align: center; padding-block: 48px; }
+.s-cta h2 { color: var(--s-on-accent); }
+.s-foot { background: var(--s-base-2); padding-block: 32px 18px; font-size: 14px; }
+.s-foot .s-cols3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.s-foot p { margin: 0 0 6px; }
+.s-copy { border-top: 1px solid var(--s-line); margin-top: 18px; padding-top: 12px; font-size: 12px; }
+.bound { border-radius: 4px; transition: box-shadow .4s, background-color .4s; }
+.bound.flash { box-shadow: 0 0 0 3px var(--s-accent); background: color-mix(in srgb, var(--s-accent) 22%, transparent); }
+.site.show-bindings .bound { box-shadow: inset 0 -2px 0 var(--s-accent); }
+.site.show-bindings .bound::after { content: attr(data-key); font-family: var(--smono); font-size: 9px; letter-spacing: .05em; vertical-align: super; margin-left: 3px; background: var(--s-contrast); color: var(--s-base); padding: 0 4px; border-radius: 3px; }
+.s-empty { padding: 60px 22px; text-align: center; color: var(--s-contrast-2); font-family: var(--smono); font-size: 13px; }
+/* Phone layout inside the frame */
+.viewport.phone .s-grid, .viewport.phone .s-cols, .viewport.phone .s-foot .s-cols3 { grid-template-columns: 1fr; }
+.viewport.phone .s-nav { display: none; } .viewport.phone .s-burger { display: block; }
+.viewport.phone .s-hero { padding-block: 48px; }
+
+/* Rail */
+.rail { display: grid; gap: 14px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; min-width: 0; }
+.panel h2 { font-size: 1rem; font-weight: 700; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.panel h2 small { font-family: var(--font-mono); font-weight: 400; font-size: .68rem; color: var(--muted); letter-spacing: .04em; }
+.vars { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.var { border: 1px solid var(--line); background: none; border-radius: 10px; padding: 6px 4px 5px; cursor: pointer; display: grid; gap: 5px; justify-items: center; font-size: .7rem; transition: transform .15s, border-color .15s; }
+.var:hover { transform: translateY(-2px); }
+.var[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.sw { width: 100%; height: 30px; border-radius: 6px; display: grid; grid-template-columns: 2fr 1fr 1fr; overflow: hidden; border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent); }
+.field { display: grid; gap: 3px; margin-bottom: 9px; }
+.field label { font-size: .74rem; font-weight: 600; color: var(--muted); }
+.field input { border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 6px 9px; font-size: .86rem; min-width: 0; width: 100%; }
+.field .hint { font-family: var(--font-mono); font-size: .68rem; color: var(--muted); overflow-wrap: anywhere; }
+.field .hint.bad { color: #c2410c; }
+.toggle { display: flex; align-items: center; gap: 8px; font-size: .8rem; cursor: pointer; }
+.pats { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.pat { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 6px; align-items: center; border: 1px solid var(--line); border-radius: 9px; padding: 5px 7px; font-size: .8rem; background: var(--bg); }
+.pat.off { opacity: .5; } .pat.off .pname { text-decoration: line-through; }
+.pname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pname small { display: block; font-family: var(--font-mono); font-size: .64rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+.ib { border: 1px solid var(--line); background: var(--surface); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; display: grid; place-items: center; font-size: .75rem; padding: 0; }
+.ib:disabled { opacity: .35; cursor: default; }
+.json { font-family: var(--font-mono); font-size: .7rem; line-height: 1.55; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 10px; margin: 0; overflow: auto; max-height: 230px; white-space: pre; }
+.json .k { color: var(--muted); }
+.cr { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px 10px; font-size: .74rem; margin-top: 10px; font-variant-numeric: tabular-nums; }
+.cr .pass { font-family: var(--font-mono); color: var(--accent-ink); font-weight: 600; }
+.reset { border: 1px solid var(--line); background: none; border-radius: 999px; padding: 4px 12px; font-size: .74rem; cursor: pointer; }
+
+/* About */
+.about { margin-top: 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px 48px; }
+.about h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); letter-spacing: -.02em; margin-bottom: 14px; }
+.about h3 { font-size: 1.1rem; margin: 22px 0 8px; }
+.about p, .about li { color: var(--ink); max-width: 64ch; }
+.about ul { padding-left: 1.1em; margin: 0; }
+.about li { margin-bottom: 4px; }
+.about li::marker { color: var(--accent-ink); }
+.langs { display: flex; height: 12px; border-radius: 999px; overflow: hidden; margin: 10px 0 8px; border: 1px solid var(--line); }
+.langs span { display: block; height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-family: var(--font-mono); font-size: .74rem; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps li { counter-increment: s; position: relative; padding-left: 34px; margin-bottom: 10px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: var(--bg); font-family: var(--font-mono); font-size: .72rem; display: grid; place-items: center; }
+code { font-family: var(--font-mono); font-size: .86em; background: color-mix(in srgb, var(--line) 55%, transparent); padding: .05em .35em; border-radius: 4px; overflow-wrap: anywhere; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; font-weight: 600; text-decoration: none; font-size: .9rem; border: 1px solid var(--ink); color: var(--ink); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.note { font-size: .8rem; color: var(--muted); margin-top: 28px; }
+
+@media (max-width: 980px) { .bench { grid-template-columns: 1fr; } .rail { position: static; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); } }
+@media (max-width: 760px) {
+  .mast { grid-template-columns: 1fr; } .facts { justify-content: flex-start; }
+  .about { grid-template-columns: 1fr; }
+  .s-grid, .s-cols, .s-foot .s-cols3 { grid-template-columns: 1fr; }
+  .s-nav { display: none; } .s-burger { display: block; }
+  .seg { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="tag">Free WordPress block theme · v1.0.0</div>
+      <h1>Sinag <span>block theme</span></h1>
+      <p>A fast, script-free WordPress theme for Philippine small businesses. Pick a style, type your phone and hours once, and every section of the site updates. Try it below on a sample café.</p>
+    </div>
+    <div class="facts" aria-label="Project facts">
+      <span class="chip">theme.json v3</span><span class="chip">5 styles</span><span class="chip">10 patterns</span><span class="chip">0 theme JS</span><span class="chip">GPL-2.0+</span>
+    </div>
+  </header>
+
+  <section class="bench" aria-label="Interactive theme preview">
+    <div class="frame">
+      <div class="chrome">
+        <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="url" id="url">kapehansaburol.example/</div>
+        <div class="seg" role="group" aria-label="Preview width">
+          <button type="button" id="dev-desk" aria-pressed="true">Desktop</button>
+          <button type="button" id="dev-phone" aria-pressed="false">Phone</button>
+        </div>
+      </div>
+      <div class="stage"><div class="viewport" id="viewport"><div class="site" id="site" aria-live="off"></div></div></div>
+    </div>
+
+    <aside class="rail">
+      <div class="panel">
+        <h2>Style variation <small>styles/*.json</small></h2>
+        <div class="vars" id="vars" role="group" aria-label="Style variations"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Business Details <small>Appearance menu</small></h2>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" type="tel" autocomplete="off"><span class="hint" id="h-phone"></span></div>
+        <div class="field"><label for="f-hours">Hours (one line)</label><input id="f-hours" type="text" autocomplete="off"></div>
+        <div class="field"><label for="f-address">Address</label><input id="f-address" type="text" autocomplete="off"></div>
+        <div class="field"><label for="f-messenger">Messenger or chat link</label><input id="f-messenger" type="url" autocomplete="off"><span class="hint" id="h-messenger"></span></div>
+        <label class="toggle"><input type="checkbox" id="show-bind"> Highlight bound blocks</label>
+      </div>
+
+      <div class="panel">
+        <h2>Front page patterns <small>front-page.html</small></h2>
+        <ul class="pats" id="pats"></ul>
+      </div>
+
+      <div class="panel">
+        <h2>Palette <small id="json-file">theme.json</small></h2>
+        <pre class="json" id="json" tabindex="0" aria-label="Active palette JSON"></pre>
+        <div class="cr" id="contrast"></div>
+        <p style="margin:10px 0 0"><button type="button" class="reset" id="reset">Reset demo</button></p>
+      </div>
+    </aside>
+  </section>
+
+  <section class="about" aria-labelledby="about-h">
+    <div>
+      <h2 id="about-h">About this project</h2>
+      <p><strong>The problem.</strong> Most small businesses in Bukidnon and across Mindanao run their online presence from a Facebook page. When they do get a website, it is often a heavy page-builder theme that loads slowly on mobile data, and the phone number is typed into a dozen places that all go stale the day the number changes.</p>
+      <p><strong>The fix.</strong> Sinag is a block theme built on <code>theme.json</code> with ready-made sections for cafés, stores, clinics and cooperatives. A small Business Details screen stores the phone, hours, address and chat link once, and the WordPress Block Bindings API prints them into the header, footer, hero buttons and contact card.</p>
+      <h3>Who it is for</h3>
+      <ul>
+        <li>Cafés, bakeries, sari-sari stores and repair shops</li>
+        <li>Clinics, review centers, cooperatives and barangay offices</li>
+        <li>Freelance web developers who want a light starting point for client sites</li>
+      </ul>
+      <h3>Features</h3>
+      <ul>
+        <li>Five style variations: Sinag, Kape, Dagat, Palay and Gabi (dark)</li>
+        <li>Patterns: hero, services, peso price list, hours and location, FAQ, message band</li>
+        <li>Business Details bound into blocks, with automatic <code>+63</code> Call links</li>
+        <li>System font stacks, zero theme JavaScript, zero external requests</li>
+        <li>Every palette passes WCAG AA, body text passes AAA</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Languages used</h3>
+      <div class="langs" aria-hidden="true" id="langbar"></div>
+      <div class="legend" id="legend"></div>
+      <p style="font-size:.88rem;color:var(--muted)">Line counts from the v1.0.0 repository (theme code and tests; docs and demo excluded).</p>
+      <h3>Tech stack</h3>
+      <ul>
+        <li>WordPress 6.6+ Full Site Editing, <code>theme.json</code> version 3</li>
+        <li>Block Bindings API (<code>register_block_bindings_source</code>)</li>
+        <li>Settings API with nonces, sanitizing and late escaping</li>
+        <li>Plain-PHP and Node test scripts, Playwright screenshots</li>
+      </ul>
+      <h3>Install in 3 steps</h3>
+      <ol class="steps">
+        <li>Download <code>sinag-theme.zip</code> from the GitHub release.</li>
+        <li>wp-admin → Appearance → Themes → Add New → Upload Theme → Activate.</li>
+        <li>Appearance → Business Details, then pick a style in Appearance → Editor → Styles.</li>
+      </ol>
+      <h3>Client pitch</h3>
+      <p>Offer it as a "launch in a day" package: install Sinag, fill in the details, swap in the client's menu and photos. Charge for setup and a monthly care plan; the theme stays free and updatable.</p>
+      <div class="links">
+        <a class="btn primary" href="https://github.com/EfraimRay/sinag-theme" target="_blank" rel="noopener">GitHub repository</a>
+        <a class="btn" href="https://www.efraimray.com/" target="_blank" rel="noopener">efraimray.com</a>
+      </div>
+    </div>
+  </section>
+  <p class="note">Kapehan sa Burol is a fictional sample business. The preview recreates the theme's real patterns in HTML and CSS; on a WordPress site they are rendered by PHP from the theme files.</p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  // Palettes copied from theme.json and styles/*.json (same slugs in every file).
+  var VARS = [
+    { id: 'sinag', title: 'Sinag', file: 'theme.json', p: { 'base': '#f6f8f4', 'base-2': '#e9efe4', 'contrast': '#14261d', 'contrast-2': '#4b5d52', 'accent': '#f2b01e', 'on-accent': '#14261d', 'line': '#cfd9cb' } },
+    { id: 'kape', title: 'Kape', file: 'styles/kape.json', p: { 'base': '#f7f1ea', 'base-2': '#ecdfd2', 'contrast': '#2a1a12', 'contrast-2': '#6a5345', 'accent': '#7a3e1d', 'on-accent': '#fff8f0', 'line': '#dccbbb' } },
+    { id: 'dagat', title: 'Dagat', file: 'styles/dagat.json', p: { 'base': '#f3f8fb', 'base-2': '#dfeef5', 'contrast': '#0b2533', 'contrast-2': '#46606d', 'accent': '#0d7fa5', 'on-accent': '#ffffff', 'line': '#c6dce6' } },
+    { id: 'palay', title: 'Palay', file: 'styles/palay.json', p: { 'base': '#f7f8ee', 'base-2': '#eaeed8', 'contrast': '#1c2810', 'contrast-2': '#55603f', 'accent': '#4f6f12', 'on-accent': '#ffffff', 'line': '#d4dbbb' } },
+    { id: 'gabi', title: 'Gabi', file: 'styles/gabi.json', p: { 'base': '#0f1513', 'base-2': '#18211d', 'contrast': '#e8efe9', 'contrast-2': '#a5b4aa', 'accent': '#f2b01e', 'on-accent': '#14130c', 'line': '#2b3832' } }
+  ];
+  var PATTERNS = [
+    { slug: 'hero-sunrise', name: 'Sunrise hero' },
+    { slug: 'services-grid', name: 'Services grid' },
+    { slug: 'price-list', name: 'Price list (pesos)' },
+    { slug: 'hours-location', name: 'Hours and location' },
+    { slug: 'faq', name: 'FAQ' },
+    { slug: 'cta-message', name: 'Message call-to-action' }
+  ];
+  var DEFAULTS = { phone: '0926 555 0142', hours: 'Mon–Sat 7:00 AM – 6:00 PM · Sun closed', address: 'Purok 3, Barangay Poblacion, Valencia City, Bukidnon', messenger: 'https://m.me/kapehan.example' };
+  var LANGS = [['PHP', 901, '#7a86b8'], ['JSON', 346, '#3f9d6b'], ['HTML', 174, '#e07a3f'], ['CSS', 113, '#4f86c6'], ['JavaScript', 106, '#d8b21f']];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var store = { get: function (k) { try { return JSON.parse(localStorage.getItem('sinag-demo-' + k)); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem('sinag-demo-' + k, JSON.stringify(v)); } catch (e) { /* storage blocked: demo still works */ } } };
+  var state = { v: 'sinag', device: 'desk', biz: Object.assign({}, DEFAULTS), order: PATTERNS.map(function (p) { return p.slug; }), off: {} };
+  var saved = store.get('state'); if (saved && saved.order && saved.biz) { state = Object.assign(state, saved); }
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  // Same rules as sinag_theme_phone_to_tel() in inc/helpers.php.
+  function phoneToTel(phone) {
+    phone = String(phone).trim(); var d = phone.replace(/\D/g, '');
+    if (!d) return '';
+    if (phone.charAt(0) === '+') return 'tel:+' + d;
+    if (d.indexOf('63') === 0 && d.length === 12) return 'tel:+' + d;
+    if (d.charAt(0) === '0' && d.length >= 9 && d.length <= 11) return 'tel:+63' + d.slice(1);
+    return 'tel:' + d;
+  }
+  function cleanPhone(p) { return String(p).replace(/[^0-9+()\-\s]/g, '').replace(/\s+/g, ' ').trim(); }
+  function webUrl(u) { u = String(u).trim(); return /^https?:\/\//i.test(u) ? u : ''; }
+  function b(key, fallback) { var v = state.biz[key] ? (key === 'phone' ? cleanPhone(state.biz[key]) : state.biz[key]) : ''; return '<span class="bound" data-key="' + key + '">' + esc(v || fallback) + '</span>'; }
+  function tel() { return phoneToTel(cleanPhone(state.biz.phone)) || 'tel:+639170000000'; }
+
+  var SECTIONS = {
+    'hero-sunrise': function () { return '<section class="s-band alt s-hero"><div class="s-narrow"><p class="s-eyebrow">Kapehan sa Burol · Valencia City</p><h2 class="s-h1">Locally roasted Bukidnon coffee, brewed the way you like it.</h2><p class="s-lead">Beans from farms around Mount Kitanglad, roasted every Tuesday. Dine in, take out, or message us to reserve the upstairs room.</p><div class="s-btns"><a class="s-btn" href="' + esc(tel()) + '" data-demo-link>Call us<small class="bound" data-key="phone_link">' + esc(tel().replace('tel:', '')) + '</small></a><a class="s-btn out" href="' + esc(webUrl(state.biz.messenger) || '#') + '" data-demo-link>Message us</a></div></div></section>'; },
+    'services-grid': function () { return '<section class="s-band"><div class="s-in"><p class="s-eyebrow">What we offer</p><h2>More than a cup to go</h2><div class="s-grid">' +
+      [['Dine in or take out', 'Pour-over, espresso and native tablea drinks, with pandesal and kakanin baked each morning.'], ['Beans by the kilo', 'Whole or ground Robusta and Arabica blends from Bukidnon farms, packed in 250 g and 1 kg bags.'], ['Room for meetings', 'The upstairs room seats 12 for barangay meetings, review classes and small celebrations.']]
+        .map(function (c) { return '<div class="s-card"><h3>' + c[0] + '</h3><p>' + c[1] + '</p></div>'; }).join('') + '</div></div></section>'; },
+    'price-list': function () {
+      function rows(list) { return list.map(function (r) { return '<p class="s-row"><span>' + r[0] + '</span><span class="s-lead-dots" aria-hidden="true"></span><b>₱' + r[1] + '</b></p>'; }).join(''); }
+      return '<section class="s-band alt"><div class="s-in"><p class="s-eyebrow">Menu</p><h2>Prices</h2><div class="s-cols"><div><h3>Coffee</h3>' + rows([['Brewed Bukidnon Robusta', 85], ['Spanish latte', 140], ['Tablea hot chocolate', 120]]) + '</div><div><h3>Bakery</h3>' + rows([['Pandesal (6 pcs)', 45], ['Ube cheese ensaymada', 65], ['Beans, 250 g bag', 320]]) + '</div></div></div></section>'; },
+    'hours-location': function () { return '<section class="s-band"><div class="s-in s-cols"><div><p class="s-eyebrow">Hours</p><h2>Drop by</h2><p class="s-lead" style="margin:0">' + b('hours', DEFAULTS.hours) + '</p><ul class="s-checks"><li>Free Wi-Fi and charging outlets</li><li>GCash and Maya accepted</li><li>Parking for motorcycles in front</li></ul></div><div class="s-card"><p class="s-eyebrow">Address</p><p style="margin:0 0 14px">' + b('address', DEFAULTS.address) + '</p><p class="s-eyebrow">Phone</p><p style="margin:0 0 14px">' + b('phone', DEFAULTS.phone) + '</p><div class="s-btns"><a class="s-btn" href="' + esc(tel()) + '" data-demo-link>Call</a><a class="s-btn out" href="mailto:hello@example.com" data-demo-link>Email</a></div></div></div></section>'; },
+    'faq': function () { return '<section class="s-band"><div class="s-narrow"><h2>Questions we get a lot</h2>' +
+      [['Do you deliver?', 'Yes, within Valencia City through local riders. Message us your order and landmark.'], ['Can we reserve the upstairs room?', 'Book at least two days ahead. There is no room fee when the group orders ₱1,500 or more.'], ['Do you sell beans wholesale?', 'We supply cafés and resellers from 5 kg per month. Ask for the current rate card.']]
+        .map(function (q, i) { return '<details class="s-details"' + (i === 0 ? ' open' : '') + '><summary>' + q[0] + '</summary><p>' + q[1] + '</p></details>'; }).join('') + '</div></section>'; },
+    'cta-message': function () { return '<section class="s-cta"><div class="s-in"><h2>Order ahead, skip the line.</h2><a class="s-btn ink" href="' + esc(webUrl(state.biz.messenger) || '#') + '" data-demo-link>Message us</a></div></section>'; }
+  };
+
+  function renderSite() {
+    var html = '<div class="s-top"><div class="s-in">' + b('hours', DEFAULTS.hours) + b('phone', DEFAULTS.phone) + '</div></div>' +
+      '<div class="s-head"><div class="s-in"><div class="s-brand"><span class="s-logo" aria-hidden="true"></span>Kapehan sa Burol</div><nav class="s-nav" aria-label="Sample menu"><span>Menu</span><span>About</span><span>Contact</span></nav><span class="s-burger" aria-hidden="true"></span></div></div>';
+    var shown = state.order.filter(function (s) { return !state.off[s]; });
+    html += shown.length ? shown.map(function (s) { return SECTIONS[s](); }).join('') : '<div class="s-empty">All patterns are hidden. Turn one back on in the rail.</div>';
+    html += '<footer class="s-foot"><div class="s-in"><div class="s-cols3"><div><p class="s-brand">Kapehan sa Burol</p></div><div><p class="s-eyebrow">Visit</p><p>' + b('address', DEFAULTS.address) + '</p></div><div><p class="s-eyebrow">Contact</p><p>' + b('phone', DEFAULTS.phone) + '</p><p>hello@example.com</p></div></div><p class="s-copy">© 2026 · Built with the Sinag theme</p></div></footer>';
+    $('site').innerHTML = html;
+  }
+  function applyVariation() {
+    var v = VARS.filter(function (x) { return x.id === state.v; })[0] || VARS[0], site = $('site'), vp = $('viewport');
+    Object.keys(v.p).forEach(function (k) { site.style.setProperty('--s-' + k, v.p[k]); vp.style.setProperty('--s-' + k, v.p[k]); });
+    $('vars').querySelectorAll('.var').forEach(function (btn) { btn.setAttribute('aria-pressed', String(btn.getAttribute('data-v') === v.id)); });
+    $('json-file').textContent = v.file;
+    $('json').innerHTML = '<span class="k">"palette"</span>: [\n' + Object.keys(v.p).map(function (k) { return '  { <span class="k">"slug"</span>: "' + k + '", <span class="k">"color"</span>: "' + v.p[k] + '" }'; }).join(',\n') + '\n]';
+    var pairs = [['Body text on base', 'contrast', 'base', 7, 'AAA'], ['Muted text on base', 'contrast-2', 'base', 4.5, 'AA'], ['Button text on accent', 'on-accent', 'accent', 4.5, 'AA']];
+    $('contrast').innerHTML = pairs.map(function (p) { var r = ratio(v.p[p[1]], v.p[p[2]]); return '<span>' + p[0] + '</span><span>' + r.toFixed(2) + ':1</span><span class="pass">' + (r >= p[3] ? p[4] + ' ✓' : 'fail') + '</span>'; }).join('');
+  }
+  function lum(hex) { var c = hex.slice(1).match(/../g).map(function (h) { var x = parseInt(h, 16) / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+  function ratio(a, b2) { var x = lum(a), y = lum(b2); if (x < y) { var t = x; x = y; y = t; } return (x + 0.05) / (y + 0.05); }
+
+  function renderPatterns() {
+    $('pats').innerHTML = state.order.map(function (s, i) {
+      var p = PATTERNS.filter(function (x) { return x.slug === s; })[0], off = !!state.off[s];
+      return '<li class="pat' + (off ? ' off' : '') + '"><input type="checkbox" id="pt-' + s + '" data-act="toggle" data-s="' + s + '"' + (off ? '' : ' checked') + ' aria-label="Show ' + p.name + '"><label class="pname" for="pt-' + s + '">' + p.name + '<small>sinag-theme/' + s + '</small></label><button type="button" class="ib" data-act="up" data-s="' + s + '" aria-label="Move ' + p.name + ' up"' + (i === 0 ? ' disabled' : '') + '>↑</button><button type="button" class="ib" data-act="down" data-s="' + s + '" aria-label="Move ' + p.name + ' down"' + (i === state.order.length - 1 ? ' disabled' : '') + '>↓</button></li>';
+    }).join('');
+  }
+  function hints() {
+    var t = phoneToTel(cleanPhone(state.biz.phone));
+    $('h-phone').textContent = t ? 'Call button → ' + t : 'Empty: patterns show their sample number';
+    var ok = !state.biz.messenger || webUrl(state.biz.messenger);
+    $('h-messenger').textContent = ok ? (state.biz.messenger ? 'Accepted (http/https only)' : 'Empty: button keeps its sample link') : 'Rejected: only http:// or https:// links are saved';
+    $('h-messenger').classList.toggle('bad', !ok);
+  }
+  function flash(key) { $('site').querySelectorAll('.bound[data-key="' + key + '"]' + (key === 'phone' ? ', .bound[data-key="phone_link"]' : '')).forEach(function (el) { el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 700); }); }
+  function save() { store.set('state', state); }
+  function renderAll() { renderSite(); applyVariation(); renderPatterns(); hints(); setDevice(state.device); $('site').classList.toggle('show-bindings', $('show-bind').checked); }
+  function setDevice(d) { state.device = d; $('viewport').classList.toggle('phone', d === 'phone'); $('dev-desk').setAttribute('aria-pressed', String(d === 'desk')); $('dev-phone').setAttribute('aria-pressed', String(d === 'phone')); }
+
+  // Variation buttons
+  $('vars').innerHTML = VARS.map(function (v) { return '<button type="button" class="var" data-v="' + v.id + '" aria-pressed="false"><span class="sw" aria-hidden="true"><span style="background:' + v.p.base + '"></span><span style="background:' + v.p.contrast + '"></span><span style="background:' + v.p.accent + '"></span></span>' + v.title + '</button>'; }).join('');
+  $('vars').addEventListener('click', function (e) { var btn = e.target.closest('.var'); if (!btn) return; state.v = btn.getAttribute('data-v'); applyVariation(); save(); });
+  // Business Details fields
+  ['phone', 'hours', 'address', 'messenger'].forEach(function (k) {
+    var input = $('f-' + k); input.value = state.biz[k];
+    input.addEventListener('input', function () { state.biz[k] = input.value; renderSite(); hints(); flash(k); save(); });
+  });
+  $('show-bind').addEventListener('change', function (e) { $('site').classList.toggle('show-bindings', e.target.checked); });
+  // Pattern list
+  $('pats').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-act]'); if (!btn) return;
+    var s = btn.getAttribute('data-s'), i = state.order.indexOf(s), j = btn.getAttribute('data-act') === 'up' ? i - 1 : i + 1;
+    if (j < 0 || j >= state.order.length) return;
+    state.order.splice(i, 1); state.order.splice(j, 0, s); renderPatterns(); renderSite(); save();
+    var again = $('pats').querySelector('button[data-act="' + btn.getAttribute('data-act') + '"][data-s="' + s + '"]'); if (again && !again.disabled) again.focus();
+  });
+  $('pats').addEventListener('change', function (e) { var c = e.target.closest('[data-act="toggle"]'); if (!c) return; state.off[c.getAttribute('data-s')] = !c.checked; renderPatterns(); renderSite(); save(); });
+  // Device + links inside the sample site stay inside the demo
+  $('dev-desk').addEventListener('click', function () { setDevice('desk'); save(); });
+  $('dev-phone').addEventListener('click', function () { setDevice('phone'); save(); });
+  $('site').addEventListener('click', function (e) { var a = e.target.closest('[data-demo-link]'); if (!a) return; e.preventDefault(); $('url').textContent = 'Demo link → ' + a.getAttribute('href'); });
+  $('reset').addEventListener('click', function () { state = { v: 'sinag', device: state.device, biz: Object.assign({}, DEFAULTS), order: PATTERNS.map(function (p) { return p.slug; }), off: {} }; ['phone', 'hours', 'address', 'messenger'].forEach(function (k) { $('f-' + k).value = state.biz[k]; }); renderAll(); save(); $('url').textContent = 'kapehansaburol.example/'; });
+
+  // Languages bar
+  var total = LANGS.reduce(function (s, l) { return s + l[1]; }, 0) || 1;
+  $('langbar').innerHTML = LANGS.map(function (l) { return '<span style="width:' + (l[1] / total * 100) + '%;background:' + l[2] + '"></span>'; }).join('');
+  $('legend').innerHTML = LANGS.map(function (l) { return '<span><i style="background:' + l[2] + '"></i>' + l[0] + ' ' + Math.round(l[1] / total * 100) + '% · ' + l[1] + ' lines</span>'; }).join('');
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

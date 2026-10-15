@@ -1,0 +1,17 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Dependencies and builds (none are needed, but keep them out if added later)
+node_modules/
+vendor/
+*.zip
+
+# Local WordPress test installs and logs
+wp/
+debug.log
+*.sqlite
+.env
